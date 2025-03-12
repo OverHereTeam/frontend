@@ -42,9 +42,10 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    width: 20%;
+    width: 14em;
     border: 1px solid #E2E5E8;
     border-radius: .5em;
+    margin: 0 3em 3em 0;
 `
 const Profile = styled.div`
     margin: 2em 0;
