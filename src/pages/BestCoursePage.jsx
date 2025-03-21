@@ -1,6 +1,6 @@
 import {react, useState, useEffect, useRef} from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import axiosInstance from '../api/axios';
 import dummy1 from '../assets/image/dummy/dummy_img1.jpg';
 import BestCourseCard from '../components/BestCourse/BestCourseCard';
 import MoreContentsButton from '../components/common/MoreContentsButton';
@@ -29,7 +29,7 @@ function BestCourse(){
     const [visibleData, setVisibleData] = useState(10);
     // 처음에 백엔드에서 30개 다 넘겨주고 더보기 버튼 누르면 API호출 없이 랜더링만
     useEffect(() => {
-        axios.get(`/api/v1/course/best`)
+        axiosInstance.get(`/api/v1/course/best`)
             .then(res => data.current = res.data)
             .catch(err => alert("베스트 코스 데이터를 가져오는데 실패했습니다."));
     }, [])
