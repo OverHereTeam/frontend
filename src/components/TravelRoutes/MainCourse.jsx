@@ -1,3 +1,4 @@
+// frontend/src/components/TravelRoutes/MainCourse.jsx
 import {React, useState} from "react";
 import styled from "styled-components";
 import ArrowButton from "./ArrowButton";
@@ -52,7 +53,7 @@ function MainCourse({data}) {
         {/* Right Column */}
         <div className="image-section">
           <Image 
-            src={data[currentPage].image || dummyImg} 
+            src={data[currentPage].thumbnailUrl || dummyImg} 
             alt={data[currentPage].title} 
             onClick={toDetails}
           />

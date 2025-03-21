@@ -1,3 +1,4 @@
+// frontend/src/components/BestCourse/BestCourseCard.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -12,6 +13,24 @@ function BestCourseCard(props){
         navigate(`/course-details/${props.courseId}`);
     }
 
+    // 이미지 URL 확인 및 처리
+    const getImageUrl = () => {
+        if (props.img && props.img.trim() !== '') {
+            return props.img;
+        }
+        
+        // 관광지 이미지 중 첫 번째 이미지 사용 (대체 방법)
+        if (props.attractions && props.attractions.length > 0 && 
+            props.touristSummary && props.touristSummary.length > 0) {
+            const firstTourist = props.touristSummary[0];
+            if (firstTourist.imageUrl) {
+                return firstTourist.imageUrl;
+            }
+        }
+        
+        return dummyImage;
+    };
+
     return (
         <>
             <Card onClick={toDetails}>
@@ -21,11 +40,11 @@ function BestCourseCard(props){
                         Best <br /> {props.rank}
                     </Rank>
                     }
-                    <Image src={props.img || dummyImage} alt={props.title} />
+                    <Image src={getImageUrl()} alt={props.title} />
                 </div>
 
                 <Content>
-                    <Badge text={props.region} color="gray" />      {/* 지역 정보 표시 */}
+                    <Badge text={props.region} color="gray" />
                     <Badge text={props.courseType} color="yellow" />
                     <h2>{props.title}</h2>
                     <p>{props.description}</p>

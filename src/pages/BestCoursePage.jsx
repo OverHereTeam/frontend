@@ -77,6 +77,8 @@ function BestCourse(){
                             rank={index+1}
                             region={item.region}
                             attractions={item.touristSummary.map(tourist => tourist.title)}
+                            img={item.thumbnailUrl}
+                            touristSummary={item.touristSummary}
                         />
                     </li>
                 )}
