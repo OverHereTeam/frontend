@@ -25,23 +25,20 @@ function BestCourseCard(props){
                 </div>
 
                 <Content>
-                    <Badge text="지역" color="gray" />      {/* 백엔드 부재 */}
+                    <Badge text={props.region} color="gray" />      {/* 지역 정보 표시 */}
                     <Badge text={props.courseType} color="yellow" />
                     <h2>{props.title}</h2>
                     <p>{props.description}</p>
-                    <div className="best-badges">           {/* 백엔드 부재 */}
-                        <Badge text="관광지 이름" color="gray" />
-                        <Badge text="관광지 이름" color="gray" />
-                        <Badge text="관광지 이름" color="gray" />
-                        <Badge text="관광지 이름" color="gray" />
-                        <Badge text="관광지 이름" color="gray" />
+                    <div className="best-badges">           
+                        {props.attractions && props.attractions.map((attraction, index) => (
+                            <Badge key={index} text={attraction} color="gray" />
+                        ))}
                     </div>
                     <TotalKM> <TotalDist /> 총 {props.distance}KM </TotalKM> 
                 </Content>
             </Card>
             <Divider />
         </>
-
     );
 }
 
