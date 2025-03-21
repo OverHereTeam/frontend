@@ -19,11 +19,14 @@ function MainCourse({data}) {
         <div className="route-info">
           <div className="travelroutespageheader">
             <Badge text={data[currentPage].region} color="gray" />
-            <Badge text={data[currentPage].courseType} color="yellow" />
           </div>
           <h1>{data[currentPage].title}</h1>
           <DefaultInfo>
-            <InfoIcons data={data[currentPage].courseInfo}/>
+            <InfoIcons 
+              distance={data[currentPage].courseInfo.distance}
+              count={data[currentPage].courseInfo.number}
+              difficulty={data[currentPage].courseInfo.difficulty}
+            />
           </DefaultInfo>
           
           <div className="navigation">
