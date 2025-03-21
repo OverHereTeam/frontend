@@ -5,6 +5,7 @@ import SideBar from "../../components/MyPage/SideBar";
 import MoreContentsButton from "../../components/common/MoreContentsButton";
 import formatDate from "../../components/common/formatDate";
 import Badge from "../../components/common/Badge";
+import axios from "axios";
 
 const initData =[{
     id: 1,
@@ -21,6 +22,12 @@ function MyQnA() {
     const handleRowClick = (id) => {
         navigate(`/notice/${id}`);
     }
+
+    useEffect (() => {
+      axios.get(`/api/v1/mypage/inquiries`)
+        .then(res => setData(res.data))
+        .catch(error => alert(`${error.status}: 나의 문의내역을 불러오는데 실패했습니다`))
+    });
 
     return (
         <Container>
@@ -43,10 +50,10 @@ function MyQnA() {
                         <BodyTr 
                         onClick={() => handleRowClick(item.id)}
                         >
-                        <td className="category"> 문의유형 </td>
+                        <td className="category"> {item.inquiryType || "문의유형"} </td>
                         <td> {item.title} </td>
                         <td className="date"> {formatDate(item.createdAt)} </td>
-                        <td className="right"> <Badge text="답변완료" color="green" /> </td>
+                        <td className="right"> <Badge text={item.answered? "답변완료" : "답변 대기중"} color="green" /> </td>
                         </BodyTr>
                         ))}
                     </tbody>

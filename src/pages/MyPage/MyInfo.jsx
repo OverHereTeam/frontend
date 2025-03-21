@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import SideBar from "../../components/MyPage/SideBar";
 
 function MyInfo() {
+    useEffect(() => {
+        // axios.get(`/api/v1/`)
+    }, [])
+
+
     return (
         <Container>
             <SideBar />

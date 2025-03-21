@@ -1,6 +1,7 @@
-import {React, useState} from "react";
+import {React, useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 import SideBar from "../../components/MyPage/SideBar";
 import MoreContentsButton from "../../components/common/MoreContentsButton";
 import formatDate from "../../components/common/formatDate";
@@ -21,8 +22,14 @@ function FrequentQnA() {
     const navigate = useNavigate();
 
     const handleRowClick = (id) => {
-        navigate(`/notice/${id}`);
+        navigate(`/QnA/${id}`);
     }
+
+    useEffect(() => {
+      axios.get(`/api/v1/mypage/faqs`)
+        .then(res => setData(res.data))
+        .catch(err => alert(`${err.status}: 나의 정보를 불러오는데 실패했습니다`))
+    }, []);
 
     return (
         <Container>
@@ -34,7 +41,7 @@ function FrequentQnA() {
                     <TableBody>
                         {data.map((item) => (
                         <BodyTr 
-                        onClick={() => handleRowClick(item.id)}
+                        onClick={() => handleRowClick(item.faqId)}
                         >
                         <td> <QButton>Q</QButton> </td>
                         <td> {item.title} </td>

@@ -32,7 +32,7 @@ function PersonalQnA() {
             content: content
         })
             .then(res => console.log(res.data))
-            .catch(err => alert("1:1 문의 전송에 실패하였습니다"));
+            .catch(err => alert(`${err.status}:1:1 문의 전송에 실패하였습니다`));
     };
 
     return (
