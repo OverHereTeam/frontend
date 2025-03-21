@@ -24,9 +24,9 @@ function MyInfo() {
                         </tr>
                         <tr>
                             <td colSpan='2'>
-                                <input type="radio" value="disabled" /> 장애인
-                                <input type="radio" value="disabled" /> 동반자
-                                <input type="radio" value="disabled" /> 일반인
+                                <input type="radio" name="userType" value="disabled" /> 장애인
+                                <input type="radio" name="userType" value="partner" /> 동반자
+                                <input type="radio" name="userType" value="un-disabled" /> 일반인
                             </td>
                         </tr>
                     </Tbody>
