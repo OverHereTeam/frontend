@@ -9,8 +9,13 @@ import { useNavigate } from "react-router-dom";
 function MainCourse({data}) {
     const [currentPage, setCurrentPage] = useState(0);
     const navigate = useNavigate();
+    
     const toDetails = () => {
-      navigate(`/course-details/${data.courseId}`);
+      if (data[currentPage] && data[currentPage].courseId) {
+        navigate(`/course-details/${data[currentPage].courseId}`);
+      } else {
+        console.error("courseId가 없습니다:", data[currentPage]);
+      }
     }
     
     return (
@@ -22,11 +27,7 @@ function MainCourse({data}) {
           </div>
           <h1>{data[currentPage].title}</h1>
           <DefaultInfo>
-            <InfoIcons 
-              distance={data[currentPage].courseInfo.distance}
-              count={data[currentPage].courseInfo.number}
-              difficulty={data[currentPage].courseInfo.difficulty}
-            />
+            <InfoIcons data={data[currentPage].courseInfo}/>
           </DefaultInfo>
           
           <div className="navigation">
@@ -61,7 +62,6 @@ function MainCourse({data}) {
 }
 
 export default MainCourse;
-
 const DefaultInfo = styled.div`
   display: flex;
   gap: 3em;

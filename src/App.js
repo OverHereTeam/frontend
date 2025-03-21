@@ -41,7 +41,7 @@ const App = () => {
         <Route path="/recommend-course" element={<RecCoursePage />} />
         <Route path="/tourist-attraction-search" element={<SearchPage />} />
         <Route path="/search" element={<IntegrateSearch />} />
-        <Route path="/course-details" element={<CourseDetailPage />} />
+        <Route path="/course-details/:courseId" element={<CourseDetailPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/mypage/favorite-attractions" element={<FavAttraction />} />
         <Route path="/mypage/favorite-courses" element={<FavCourse />} />

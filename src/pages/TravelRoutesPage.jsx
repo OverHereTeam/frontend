@@ -44,7 +44,6 @@ const course_data = [
   },
 ]
 
-// 에디터 픽 더미데이터 유지
 const pick_data = [
   {
     "region": "region1",
