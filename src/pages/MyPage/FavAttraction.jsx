@@ -8,6 +8,7 @@ import getNonObstacleList from "../../components/common/getNonObstacleList";
 import axiosInstance from "../../api/axios";
 import paging from "../../components/common/paging";
 import SideBar from "../../components/MyPage/SideBar";
+import formatTwoDigits from '../../components/common/formatTwoDigits';
 
 const region = ['서울', '경기도', '충청도', '강원도', '전라도', '경상도', '제주'];
 const type = ['자연', '문화/역사', '음식/미식', '축제/이벤트'];
@@ -36,21 +37,37 @@ function FavAttraction() {
     const page = useRef(0);
     const [selectedReg, setSelectedReg] = useState();
     const [selectedType, setSelectedType] = useState();
-    const [data, setData] = useState(responseExample);
+    const [data, setData] = useState(responseExample.contents);
+    const [count, setCount] = useState(formatTwoDigits(0));
+
+    const fetchFavAttraction = async () => {
+        try{
+            const favAttraction = await axiosInstance.get(`/api/v1/mypage/touristAttraction/likes?page=${page.current}`);
+            setData(favAttraction.data.contents);
+        } catch (err) {
+            console.log(err);
+            alert(`${err.code}: 관광지 즐겨찾기 데이터를 불러오는 데 실패했습니다.`);
+        };
+    };
+    const fetchCounts = async () => {
+        try{
+            const res = await axiosInstance.get(`/api/v1/likes/touristAttraction`);
+            setData(res.length);
+        } catch (err) {
+            console.log(err);
+            alert(`${err.code}: 관광지 즐겨찾기 개수를 불러오는데 실패했습니다.`);
+        };    }
 
     useEffect(() => {
-        const fetchFavAttraction = async () => {
-            try{
-                const favAttraction = await axiosInstance.get(`/api/v1/mypage/touristAttraction/likes?page=${page.current}`);
-                setData(favAttraction.data);
-            } catch (err) {
-                console.log(err);
-                alert(`${err.code}: 관광지 즐겨찾기 데이터를 불러오는 데 실패했습니다.`);
-            };
-        }
         fetchFavAttraction();
+        fetchCounts();
     }, []);
     
+    const handleMoreContents = () => {
+        page.current += 1;
+        fetchFavAttraction();
+    }
+
     return (
         <Container>
             <SideBar />
@@ -65,11 +82,11 @@ function FavAttraction() {
                             title={selectedType || '유형'} data={type} onChange={setSelectedType}
                         />
                     </DropDownGroup>
-                    <p>총 <Stressed>00</Stressed>개</p>
+                    <p>총 <Stressed>{formatTwoDigits(count)}</Stressed>개</p>
                 </SearchGroup>
 
                 <CardList>
-                    {data.contents.map((card, index) => (
+                    {data.map((card, index) => (
                     <Card
                     key={index}
                     contentId={card.touristAttractionId}
@@ -82,7 +99,7 @@ function FavAttraction() {
                     ))}
                 </CardList>
                 <ButtonWrapper>
-                    {paging(data.totalPages, page.current) && <MoreContentsButton /> }
+                    {paging(data.totalPages, page.current) && <MoreContentsButton onClick={handleMoreContents} /> }
                 </ButtonWrapper>
 
             </Contents>

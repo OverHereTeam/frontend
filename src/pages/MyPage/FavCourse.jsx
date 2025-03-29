@@ -9,6 +9,7 @@ import getNonObstacleList from "../../components/common/getNonObstacleList";
 import paging from "../../components/common/paging";
 import MoreContentsButton from "../../components/common/MoreContentsButton";
 import BestCourseCard from "../../components/BestCourse/BestCourseCard";
+import formatTwoDigits from '../../components/common/formatTwoDigits';
 
 const region = ['서울', '경기도', '충청도', '강원도', '전라도', '경상도', '제주'];
 const type = ['자연 속 휴식', '액티비티', '체험 여행', '역사 탐방', '핫플 모음', '가족 여행', '커플 여행'];
@@ -154,30 +155,47 @@ function FavCourse() {
     const [selectedType, setSelectedType] = useState();
     const [data, setData] = useState(responseExample);
     const [detailedCourses, setDetailedCourses] = useState([]);
+    const [count, setCount] = useState(formatTwoDigits(0));
     
+    
+    const fetchFavCourse = async () => {
+        try {
+            // 1. 먼저 fav 코스 목록을 가져옴
+            const favRes = await axiosInstance.get(`/api/v1/mypage/course/likes?page=${page.current}`);
+            setData(...favRes.data.contents);
+
+            // 2. 각 코스의 상세 정보를 가져옴
+            const detailPromises = favRes.data.map(course => 
+                axiosInstance.get(`/api/v1/course/detail?courseId=${course.courseId}`)
+            );
+            
+            const detailResponses = await Promise.all(detailPromises);
+            const detailedData = detailResponses.map(res => res.data);
+            setDetailedCourses(...detailedData);
+            
+        } catch (err) {
+            alert(`${err.code}: 코스 즐겨찾기 데이터를 불러오는 데 실패했습니다.`);
+        }
+    };
+    const fetchCounts = async () => {
+        try{
+            const res = await axiosInstance.get(`/api/v1/likes/courses`);
+            setData(res.length);
+        } catch (err) {
+            console.log(err);
+            alert(`${err.code}: 코스 즐겨찾기 개수를 불러오는데 실패했습니다.`);
+        };    }
 
     useEffect(() => {
-        const fetchFavCourse = async () => {
-            try {
-                // 1. 먼저 fav 코스 목록을 가져옴
-                const favRes = await axiosInstance.get(`/api/v1/mypage/course/likes?page=${page.current}`);
-                setData(favRes.data.contents);
-
-                // 2. 각 코스의 상세 정보를 가져옴
-                const detailPromises = favRes.data.map(course => 
-                    axiosInstance.get(`/api/v1/course/detail?courseId=${course.courseId}`)
-                );
-                
-                const detailResponses = await Promise.all(detailPromises);
-                const detailedData = detailResponses.map(res => res.data);
-                setDetailedCourses(detailedData);
-                
-            } catch (err) {
-                alert(`${err.code}: 코스 즐겨찾기 데이터를 불러오는 데 실패했습니다.`);
-            }
-        }
         fetchFavCourse();
+        fetchCounts();
     }, []);
+
+    const handleMoreContents = () => {
+        page.current += 1;
+        fetchFavCourse();
+    }
+
     
     return (
         <Container>
@@ -193,7 +211,7 @@ function FavCourse() {
                             title={selectedType || '코스테마'} data={type} onChange={setSelectedType}
                         />
                     </DropDownGroup>
-                    <p>총 <Stressed>00</Stressed>개</p>
+                    <p>총 <Stressed>{formatTwoDigits(count)}</Stressed>개</p>
                 </SearchGroup>
 
                 <StyledUl>
@@ -215,7 +233,7 @@ function FavCourse() {
                 )}
             </StyledUl>
                 <ButtonWrapper>
-                    {paging(data.totalPages, page.current) && <MoreContentsButton /> }
+                    {paging(data.totalPages, page.current) && <MoreContentsButton onClick={handleMoreContents} /> }
                 </ButtonWrapper>
 
             </Contents>

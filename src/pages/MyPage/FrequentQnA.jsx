@@ -1,7 +1,7 @@
 import {React, useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
+import axiosInstance from "../../api/axios";
 import SideBar from "../../components/MyPage/SideBar";
 import MoreContentsButton from "../../components/common/MoreContentsButton";
 import formatDate from "../../components/common/formatDate";
@@ -26,10 +26,15 @@ function FrequentQnA() {
     }
 
     useEffect(() => {
-      axios.get(`/api/v1/mypage/faqs`)
-        .then(res => setData(res.data))
-        .catch(err => alert(`${err.status}: 나의 정보를 불러오는데 실패했습니다`))
+        axiosInstance.get('/api/v1/mypage/faqs')
+          .then((res) => {
+            setData(res.data);
+          })
+          .catch((err) => {
+            alert(`${err.status}: 나의 정보를 불러오는데 실패했습니다`);
+          });
     }, []);
+    
 
     return (
         <Container>
