@@ -23,7 +23,7 @@ const responseExample = {
 
 function MyQnA() {
     const page = useRef(0);
-    const [data, setData] = useState(responseExample);
+    const [data, setData] = useState(responseExample.contents);
     const navigate = useNavigate();
 
     const handleRowClick = (id) => {
