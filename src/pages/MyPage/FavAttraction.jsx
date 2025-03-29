@@ -12,33 +12,31 @@ import SideBar from "../../components/MyPage/SideBar";
 const region = ['서울', '경기도', '충청도', '강원도', '전라도', '경상도', '제주'];
 const type = ['자연', '문화/역사', '음식/미식', '축제/이벤트'];
 
-const responseExample = [
-    {
-        "totalPages": 0,
-        "contents": [
-            {
-            "title": "string",
-            "areaCode": 0,
-            "overView": "string",
-            "contentId": 0,
-            "contentTypeId": 0,
-            // "thumbnailUrl": "string",
-            "helpdog": true,
-            "parking": true,
-            "wheelchair": true,
-            "restroom": true,
-            "audioguide": true,
-            "exits": "string"
-            }
-        ]
-    }
-]
+const responseExample = {
+    "totalPages": 0,
+    "contents": [
+        {
+        "title": "string",
+        "areaCode": 0,
+        "overView": "string",
+        "contentId": 0,
+        "contentTypeId": 0,
+        // "thumbnailUrl": "string",
+        "helpdog": true,
+        "parking": true,
+        "wheelchair": true,
+        "restroom": true,
+        "audioguide": true,
+        "exits": "string"
+        }
+    ]
+};
 
 function FavAttraction() {
     const page = useRef(0);
     const [selectedReg, setSelectedReg] = useState();
     const [selectedType, setSelectedType] = useState();
-    const [data, setData] = useState(responseExample[0]);
+    const [data, setData] = useState(responseExample);
 
     useEffect(() => {
         const fetchFavAttraction = async () => {
