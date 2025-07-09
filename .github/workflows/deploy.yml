@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: ['yookyung/0101']
+    branches: ['main', 'yookyung/0101']
 
 jobs:
   build:
